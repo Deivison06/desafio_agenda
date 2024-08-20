@@ -1,4 +1,5 @@
 <template>
+    <Head title="Criar" />
   <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="w-full max-w-md p-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
       <h1 class="mb-6 text-2xl font-semibold text-gray-900 dark:text-gray-100">
@@ -74,7 +75,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 
 const form = useForm({
   name: "",

@@ -1,10 +1,11 @@
 <template>
+  <Head title="Home" />
   <div
-    class="min-h-screen bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center p-6"
+    class="flex items-center justify-center min-h-screen p-6 bg-gradient-to-r from-blue-400 to-purple-500"
   >
-    <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center">
-      <h1 class="text-4xl font-bold mb-4 text-gray-800">Agenda Inteligente</h1>
-      <p class="text-xl mb-8 text-gray-600">
+    <div class="w-full max-w-md p-8 text-center bg-white rounded-lg shadow-xl">
+      <h1 class="mb-4 text-4xl font-bold text-gray-800">Agenda Inteligente</h1>
+      <p class="mb-8 text-xl text-gray-600">
         Organize seu dia com facilidade e estilo
       </p>
 
@@ -12,18 +13,18 @@
         <Link
           v-if="$page.props.auth.user"
           :href="route('dashboard')"
-          class="btn-primary block"
+          class="block btn-primary"
         >
           Acessar Minha Agenda
         </Link>
         <template v-else>
-          <Link :href="route('login')" class="btn-primary block mb-4"
+          <Link :href="route('login')" class="block mb-4 btn-primary"
             >Entrar</Link
           >
           <Link
             v-if="canRegister"
             :href="route('register')"
-            class="btn-secondary block"
+            class="block btn-secondary"
             >Criar Conta</Link
           >
         </template>
@@ -33,7 +34,7 @@
 </template>
 
   <script setup>
-import { Link } from "@inertiajs/vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 
 defineProps({
   canLogin: Boolean,
