@@ -60,8 +60,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import {Head, Link, useForm } from "@inertiajs/vue3";
-import { usePage } from "@inertiajs/vue3";
+import {Head, Link, useForm, usePage } from "@inertiajs/vue3";
 
 const { props } = usePage();
 const contact = props.contact;
@@ -75,9 +74,9 @@ const form = useForm({
 const phoneError = ref("");
 
 onMounted(() => {
-  form.name = contact.name;
-  form.email = contact.email;
-  form.phone = contact.phone;
+    form.name = contact.name;
+    form.email = contact.email;
+    form.phone = contact.phone;
 });
 
 const filterNonNumeric = (event) => {
