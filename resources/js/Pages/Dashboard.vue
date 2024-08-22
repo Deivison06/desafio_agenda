@@ -68,13 +68,13 @@ const destroy = async (contactId) => {
                     </th>
                     <th
                       scope="col"
-                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                      class="hidden px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase sm:table-cell"
                     >
                       Email
                     </th>
                     <th
                       scope="col"
-                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                      class="hidden px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase sm:table-cell"
                     >
                       Telefone
                     </th>
@@ -111,16 +111,18 @@ const destroy = async (contactId) => {
                         </div>
                       </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td
+                      class="hidden px-6 py-4 whitespace-nowrap sm:table-cell"
+                    >
                       <div class="text-sm font-medium text-gray-900">
                         {{ contact.email }}
                       </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="flex items-center">
-                        <div class="text-sm font-medium text-gray-900">
-                          {{ contact.phone }}
-                        </div>
+                    <td
+                      class="hidden px-6 py-4 whitespace-nowrap sm:table-cell"
+                    >
+                      <div class="text-sm font-medium text-gray-900">
+                        {{ contact.phone }}
                       </div>
                     </td>
                     <td class="px-6 py-4 text-sm font-medium">
