@@ -1,4 +1,5 @@
 <template>
+    <Head title="Show" />
   <GuestLayout>
     <div
       class="max-w-2xl p-8 mx-auto bg-white rounded-lg shadow-md"
@@ -50,6 +51,7 @@
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import { defineProps } from "vue";
+import { Head } from "@inertiajs/vue3";
 
 const props = defineProps({
   contact: {

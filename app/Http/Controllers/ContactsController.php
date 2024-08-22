@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Contacts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ContactsController extends Controller
 {
@@ -59,6 +60,7 @@ class ContactsController extends Controller
         ]);
 
         if ($request->hasFile('foto')) {
+                Storage::disk('public')->delete($contact->foto);
             $fotoPath = $request->file('foto')->store('fotos', 'public');
             $contactData['foto'] = $fotoPath;
         }
@@ -69,6 +71,7 @@ class ContactsController extends Controller
     public function destroy(Contacts $contact)
     {
         $contact->delete();
+        Storage::disk('public')->delete($contact->foto);
         return redirect()->route('dashboard');
     }
 }
