@@ -3,75 +3,56 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
-use App\Models\Contacts;
+use App\Models\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Services\ContactService;
+use App\Http\Requests\ContactsRequest;
 
 class ContactsController extends Controller
 {
+    public function __construct(protected ContactService $contactService)
+    {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $contacts = Contacts::all();
-        return Inertia::render('Dashboard', ['contacts' => $contacts]);
-    }
+        $contacts = $this->contactService->list($request);
 
+        return inertia('Dashboard', [
+            'contacts' => $contacts,
+            'search' => $request->search,
+        ]);
+    }
     public function create()
     {
         return Inertia::render('Contacts/Create');
     }
 
-    public function store(Request $request)
+    public function store(ContactsRequest $request)
     {
-        $contactData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:contacts',
-            'phone' => 'nullable|string|max:20',
-            'foto' => 'nullable|image|max:2048',
-        ]);
-
-        if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('fotos', 'public');
-            $contactData['foto'] = $fotoPath;
-        }
-
-        Contacts::create($contactData);
+        $contact = $this->contactService->store($request);
 
         return redirect()->route('dashboard')->with('success', 'Contato criado com sucesso!');
     }
 
-    public function show(Contacts $contact)
+    public function show(Contact $contact)
     {
         return Inertia::render('Contacts/Show', ['contact' => $contact]);
     }
 
-    public function edit(Contacts $contact)
+    public function edit(Contact $contact)
     {
         return Inertia::render('Contacts/Edit', ['contact' => $contact]);
     }
 
-    public function update(Request $request, Contacts $contact)
+    public function update(ContactsRequest $request, Contact $contact)
     {
-        $contactData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:contacts,email,' . $contact->id,
-            'phone' => 'nullable|string|max:20',
-            'foto' => 'nullable|image|max:2048',
-        ]);
-
-        if ($request->hasFile('foto')) {
-                Storage::disk('public')->delete($contact->foto);
-            $fotoPath = $request->file('foto')->store('fotos', 'public');
-            $contactData['foto'] = $fotoPath;
-        }
-        $contact->update($contactData);
+        $contact = $this->contactService->update($request, $contact);
         return redirect()->route('dashboard');
     }
 
-    public function destroy(Contacts $contact)
+    public function destroy(Contact $contact)
     {
-        $contact->delete();
-        Storage::disk('public')->delete($contact->foto);
+        $this->contactService->destroy($contact);
         return redirect()->route('dashboard');
     }
 }
