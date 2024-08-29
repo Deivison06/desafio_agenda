@@ -6,7 +6,7 @@ Olá, meu nome é Deivison Santos. Sou um desenvolvedor web com sólida formaç�
 
 ## Link de Apresentação
 
-- [Link de Apresentação do Projeto](https://www.youtube.com/watch?v=kyQpXZNdh1Y)
+- [Link de Apresentação do Projeto](https://youtu.be/Q7INBA7RZ0A)
 
 ## Principais Habilidades
 
