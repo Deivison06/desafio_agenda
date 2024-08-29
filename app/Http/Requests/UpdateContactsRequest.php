@@ -25,7 +25,7 @@ class UpdateContactsRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:contacts,email,' . $this->contact->id,
-            'phone' => 'required|numeric|unique:contacts,phone,' . $this->contact->id,
+            'phone' => 'required|string|unique:contacts,phone,' . $this->contact->id,
             'address' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
         ];

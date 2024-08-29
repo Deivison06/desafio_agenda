@@ -17,8 +17,9 @@
               <label
                 for="first_name"
                 class="block text-sm font-medium leading-6 text-gray-900"
-                >Nome</label
               >
+                Nome
+              </label>
               <div class="mt-2">
                 <input
                   id="first_name"
@@ -41,8 +42,9 @@
               <label
                 for="last_name"
                 class="block text-sm font-medium leading-6 text-gray-900"
-                >Sobrenome</label
               >
+                Sobrenome
+              </label>
               <div class="mt-2">
                 <input
                   id="last_name"
@@ -65,8 +67,9 @@
               <label
                 for="email"
                 class="block text-sm font-medium leading-6 text-gray-900"
-                >Email</label
               >
+                Email
+              </label>
               <div class="mt-2">
                 <input
                   id="email"
@@ -86,19 +89,19 @@
               <label
                 for="phone"
                 class="block text-sm font-medium leading-6 text-gray-900"
-                >Celular</label
               >
+                Celular
+              </label>
               <div class="mt-2">
                 <input
                   id="phone"
                   v-model="form.phone"
                   type="text"
-                  @input="validatePhone"
-                  @keypress="filterNonNumeric"
+                  @input="maskPhone"
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                <p v-if="phoneError" class="mt-1 text-sm text-red-500">
-                  {{ phoneError }}
+                <p v-if="form.errors.phone" class="mt-1 text-sm text-red-500">
+                  {{ form.errors.phone }}
                 </p>
               </div>
             </div>
@@ -108,8 +111,9 @@
               <label
                 for="address"
                 class="block text-sm font-medium leading-6 text-gray-900"
-                >Endereço</label
               >
+                Endereço
+              </label>
               <div class="mt-2">
                 <input
                   id="address"
@@ -128,8 +132,9 @@
               <label
                 for="notes"
                 class="block text-sm font-medium leading-6 text-gray-900"
-                >Notas</label
               >
+                Notas
+              </label>
               <div class="mt-2">
                 <textarea
                   id="notes"
@@ -157,10 +162,10 @@
   </AuthenticatedLayout>
 </template>
 
-<script setup>
+  <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { ref, onMounted } from "vue";
-import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
+import { Head, useForm, usePage } from "@inertiajs/vue3";
 
 const { props } = usePage();
 const contact = props.contact;
@@ -172,7 +177,6 @@ const form = useForm({
   phone: "",
   address: "",
   notes: "",
-  foto: null,
 });
 
 const phoneError = ref("");
@@ -186,26 +190,18 @@ onMounted(() => {
   form.notes = contact.notes;
 });
 
-const filterNonNumeric = (event) => {
-  const keyCode = event.keyCode || event.which;
-  const key = String.fromCharCode(keyCode);
-  if (!/^\d$/.test(key)) {
-    event.preventDefault();
-  }
-};
+const maskPhone = () => {
+  let numericPhone = form.phone.replace(/\D/g, "");
+  if (numericPhone.length > 11) numericPhone = numericPhone.slice(0, 11);
 
-const validatePhone = () => {
-  const numericPhone = form.phone.replace(/\D/g, "");
-  if (numericPhone.length > 11) {
-    phoneError.value = "O número de celular não pode exceder 11 caracteres.";
-  } else {
-    phoneError.value = "";
-  }
-  form.phone = numericPhone;
+  const ddd = numericPhone.slice(0, 2);
+  const part1 = numericPhone.slice(2, 7);
+  const part2 = numericPhone.slice(7, 11);
+
+  form.phone = `(${ddd}) ${part1}-${part2}`;
 };
 
 const submit = () => {
-  validatePhone();
   if (phoneError.value) {
     return;
   }
@@ -216,12 +212,11 @@ const submit = () => {
     onError: (errors) => {
       console.error("Erro ao atualizar contato:", errors);
     },
-    preserveState: true,
   });
 };
 </script>
 
-<style scoped>
+  <style scoped>
 body {
   font-family: "Inter", sans-serif;
 }

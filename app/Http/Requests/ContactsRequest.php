@@ -26,7 +26,7 @@ class ContactsRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'email' => 'required|email|unique:contacts,email,',
-            'phone' => 'required|numeric|unique:contacts,phone,',
+            'phone' => 'required|string|unique:contacts,phone,',
             'address' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
         ];

@@ -7,7 +7,7 @@
           Criar Contato
         </h2>
         <p class="mt-1 text-base leading-6 text-gray-600">
-            Preencha as informações de contato abaixo.
+          Preencha as informações de contato abaixo.
         </p>
         <form @submit.prevent="submit" enctype="multipart/form-data">
           <div class="grid grid-cols-1 mt-10 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -66,15 +66,16 @@
               <label
                 for="phone"
                 class="block text-sm font-medium leading-6 text-gray-900"
-                >Celular</label
               >
+                Celular
+              </label>
               <div class="mt-2">
                 <input
                   id="phone"
                   v-model="form.phone"
                   type="text"
-                  @input="validatePhone"
-                  @keypress="filterNonNumeric"
+                  required
+                  @input="maskPhone"
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -143,7 +144,7 @@
   </AuthenticatedLayout>
 </template>
 
-  <script setup>
+<script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { ref } from "vue";
 import { Head, useForm } from "@inertiajs/vue3";
@@ -161,29 +162,21 @@ const form = useForm({
 
 const phoneError = ref("");
 
-const filterNonNumeric = (event) => {
-  const keyCode = event.keyCode || event.which;
-  const key = String.fromCharCode(keyCode);
-  if (!/^\d$/.test(key)) {
-    event.preventDefault();
-  }
-};
+const maskPhone = () => {
+  let numericPhone = form.phone.replace(/\D/g, "");
+  if (numericPhone.length > 11) numericPhone = numericPhone.slice(0, 11);
 
-const validatePhone = () => {
-  const numericPhone = form.phone.replace(/\D/g, "");
-  if (numericPhone.length > 11) {
-    phoneError.value = "O número de celular não pode exceder 11 caracteres.";
-  } else {
-    phoneError.value = "";
-  }
-  form.phone = numericPhone;
+  const ddd = numericPhone.slice(0, 2);
+  const part1 = numericPhone.slice(2, 7);
+  const part2 = numericPhone.slice(7, 11);
+
+  form.phone = `(${ddd}) ${part1}-${part2}`;
 };
 
 const submit = () => {
   if (phoneError.value) {
     return;
   }
-
   form.post(route("contacts.store"), {
     onSuccess: () => {
       form.reset();
@@ -201,7 +194,7 @@ const handleFileUpload = (event) => {
 };
 </script>
 
-  <style scoped>
+    <style scoped>
 body {
   font-family: "Inter", sans-serif;
 }
