@@ -12,6 +12,7 @@
 
         <form @submit.prevent="submit">
           <div class="grid grid-cols-1 mt-10 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <!-- Nome -->
             <div class="sm:col-span-3">
               <label
                 for="first_name"
@@ -26,9 +27,16 @@
                   required
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                <p
+                  v-if="form.errors.first_name"
+                  class="mt-1 text-sm text-red-500"
+                >
+                  {{ form.errors.first_name }}
+                </p>
               </div>
             </div>
 
+            <!-- Sobrenome -->
             <div class="sm:col-span-3">
               <label
                 for="last_name"
@@ -43,9 +51,16 @@
                   required
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                <p
+                  v-if="form.errors.last_name"
+                  class="mt-1 text-sm text-red-500"
+                >
+                  {{ form.errors.last_name }}
+                </p>
               </div>
             </div>
 
+            <!-- Email -->
             <div class="sm:col-span-3">
               <label
                 for="email"
@@ -60,9 +75,13 @@
                   required
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                <p v-if="form.errors.email" class="mt-1 text-sm text-red-500">
+                  {{ form.errors.email }}
+                </p>
               </div>
             </div>
 
+            <!-- Celular -->
             <div class="sm:col-span-3">
               <label
                 for="phone"
@@ -78,9 +97,13 @@
                   @keypress="filterNonNumeric"
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                <p v-if="phoneError" class="mt-1 text-sm text-red-500">
+                  {{ phoneError }}
+                </p>
               </div>
             </div>
 
+            <!-- Endereço -->
             <div class="col-span-full">
               <label
                 for="address"
@@ -94,9 +117,13 @@
                   type="text"
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                <p v-if="form.errors.address" class="mt-1 text-sm text-red-500">
+                  {{ form.errors.address }}
+                </p>
               </div>
             </div>
 
+            <!-- Notas -->
             <div class="col-span-full">
               <label
                 for="notes"
@@ -110,6 +137,9 @@
                   rows="3"
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 ></textarea>
+                <p v-if="form.errors.notes" class="mt-1 text-sm text-red-500">
+                  {{ form.errors.notes }}
+                </p>
               </div>
             </div>
           </div>
@@ -142,6 +172,7 @@ const form = useForm({
   phone: "",
   address: "",
   notes: "",
+  foto: null,
 });
 
 const phoneError = ref("");
@@ -164,33 +195,20 @@ const filterNonNumeric = (event) => {
 };
 
 const validatePhone = () => {
-  // Remove todos os caracteres não numéricos
   const numericPhone = form.phone.replace(/\D/g, "");
-
-  // Verifica se o número é maior que 11 caracteres
   if (numericPhone.length > 11) {
     phoneError.value = "O número de celular não pode exceder 11 caracteres.";
   } else {
     phoneError.value = "";
   }
-
-  // Atualiza o campo de telefone com o valor numérico limpo
   form.phone = numericPhone;
 };
 
 const submit = () => {
-  // Primeiro, valide o telefone
   validatePhone();
-
-  // Verifique se há erros antes de enviar
   if (phoneError.value) {
     return;
   }
-
-  // Adicionar um log para verificar os dados
-  console.log("Dados do formulário:", form);
-
-  // Envie o formulário
   form.patch(route("contacts.update", contact.id), {
     onSuccess: () => {
       console.log("Contato atualizado com sucesso!");
@@ -201,7 +219,6 @@ const submit = () => {
     preserveState: true,
   });
 };
-
 </script>
 
 <style scoped>

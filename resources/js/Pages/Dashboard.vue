@@ -1,5 +1,4 @@
 <script setup>
-import Checkbox from "@/Components/Checkbox.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { ref, computed, watch } from "vue";
@@ -35,41 +34,6 @@ const fetchContacts = async (searchQuery) => {
       console.error("Erro ao buscar contatos:", errors);
     },
   });
-};
-const destroy = async (contactId) => {
-  if (confirm("Tem certeza que deseja apagar este contato?")) {
-    try {
-      const form = useForm({});
-      await form.delete(route("contacts.destroy", contactId), {
-        preserveState: true,
-        onSuccess: () => {
-          console.log("Contato deletado com sucesso!");
-          props.contacts = props.contacts.filter(
-            (contact) => contact.id !== contactId
-          );
-        },
-        onError: (errors) => {
-          console.error("Erro ao deletar o contato:", errors);
-        },
-      });
-    } catch (error) {
-      console.error("Erro ao executar a operação de deleção:", error);
-    }
-  }
-};
-const updateFavorite = async (contact) => {
-  try {
-    // Inclua todos os campos do contato
-    const updatedContact = {
-      ...contact, // Copie todos os campos do contato
-      is_favorite: contact.is_favorite, // Atualize apenas o campo is_favorite
-    };
-
-    await axios.put(`/contacts/${contact.id}`, updatedContact);
-    console.log("Contato atualizado com sucesso!");
-  } catch (error) {
-    console.error("Erro ao atualizar o contato:", error);
-  }
 };
 </script>
 

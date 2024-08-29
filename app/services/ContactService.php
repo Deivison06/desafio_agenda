@@ -54,8 +54,8 @@ class ContactService
         return DB::transaction(function () use ($contact) {
             $contact->delete();
             if ($contact->foto) {
-                Storage::disk('public')->delete($contact->foto);
-            }
+            Storage::disk('public')->delete($contact->foto);
+        }
         });
     }
 }
