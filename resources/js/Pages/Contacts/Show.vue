@@ -8,25 +8,28 @@
             Detalhes do Contato
           </h2>
           <p class="mt-1 text-lg leading-6 text-gray-600">
-            Confira abaixo as informações detalhadas do contato. Você pode visualizar e editar os dados conforme necessário.
+            Confira abaixo as informações detalhadas do contato. Você pode
+            visualizar e editar os dados conforme necessário.
           </p>
         </div>
         <div class="flex flex-col items-center p-6 rounded-lg md:flex-row">
-          <div class="w-40 h-40 mb-6 md:mb-0 md:mr-10">
-            <img
-              v-if="contact.foto"
-              :src="`/storage/${contact.foto}`"
-              alt="Foto do contato"
-              class="object-cover w-full h-full transition-transform duration-300 rounded-full shadow-xl hover:scale-105"
-              style="object-fit: cover"
-            />
-            <div
-              v-else
-              class="flex items-center justify-center w-full h-full bg-gray-400 rounded-full shadow-md"
-            >
-              <span class="text-3xl text-gray-600">
-                {{ contact.first_name.charAt(0).toUpperCase() }}
-              </span>
+          <div>
+            <div class="w-40 h-40 mb-6 md:mb-0 md:mr-10">
+              <img
+                v-if="contact.foto"
+                :src="`/storage/${contact.foto}`"
+                alt="Foto do contato"
+                class="object-cover w-full h-full transition-transform duration-300 rounded-full shadow-xl hover:scale-105"
+                style="object-fit: cover"
+              />
+              <div
+                v-else
+                class="flex items-center justify-center w-full h-full bg-gray-400 rounded-full shadow-md"
+              >
+                <span class="text-3xl text-gray-600">
+                  {{ contact.first_name.charAt(0).toUpperCase() }}
+                </span>
+              </div>
             </div>
           </div>
           <div class="ms:text-center md:text-left">

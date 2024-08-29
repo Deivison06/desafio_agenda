@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ContactsRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UpdateContactsRequest;
 
 class ContactService
 {
@@ -38,21 +39,11 @@ class ContactService
             return $this->contact->create($contactData);
         });
     }
-    public function update(ContactsRequest $request, Contact $contact)
+    public function update(UpdateContactsRequest $request, Contact $contact)
     {
         return DB::transaction(function () use ($request, $contact) {
             $contactData = $request->validated();
 
-            if ($request->hasFile('foto')) {
-                // Verifique se há uma foto antiga e exclua-a
-                if ($contact->foto) {
-                    Storage::disk('public')->delete($contact->foto);
-                }
-                $fotoPath = $request->file('foto')->store('fotos', 'public');
-                $contactData['foto'] = $fotoPath;
-            }
-
-            // Atualiza os dados do contato
             $contact->update($contactData);
 
             return redirect()->route('dashboard')->with('success', 'Contato atualizado com sucesso!');
@@ -62,7 +53,9 @@ class ContactService
     {
         return DB::transaction(function () use ($contact) {
             $contact->delete();
-            Storage::disk('public')->delete($contact->foto);
+            if ($contact->foto) {
+                Storage::disk('public')->delete($contact->foto);
+            }
         });
     }
 }

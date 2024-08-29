@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ContactsRequest extends FormRequest
+class UpdateContactsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,8 @@ class ContactsRequest extends FormRequest
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'email' => 'required|email|unique:contacts,email,',
-            'phone' => 'required|numeric|unique:contacts,phone,',
+            'email' => 'required|email|unique:contacts,email,' . $this->contact->id,
+            'phone' => 'required|numeric|unique:contacts,phone,' . $this->contact->id,
             'address' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
         ];

@@ -7,6 +7,7 @@ use App\Models\Contact;
 use Illuminate\Http\Request;
 use App\Services\ContactService;
 use App\Http\Requests\ContactsRequest;
+use App\Http\Requests\UpdateContactsRequest;
 
 class ContactsController extends Controller
 {
@@ -44,7 +45,7 @@ class ContactsController extends Controller
         return Inertia::render('Contacts/Edit', ['contact' => $contact]);
     }
 
-    public function update(ContactsRequest $request, Contact $contact)
+    public function update(UpdateContactsRequest $request, Contact $contact)
     {
         $contact = $this->contactService->update($request, $contact);
         return redirect()->route('dashboard');

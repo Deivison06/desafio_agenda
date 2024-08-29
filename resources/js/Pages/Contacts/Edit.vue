@@ -142,7 +142,6 @@ const form = useForm({
   phone: "",
   address: "",
   notes: "",
-  foto: null,
 });
 
 const phoneError = ref("");
