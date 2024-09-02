@@ -17,7 +17,6 @@ class ContactsController extends Controller
     public function index(Request $request)
     {
         $contacts = $this->contactService->list($request);
-
         return inertia('Dashboard', [
             'contacts' => $contacts,
             'search' => $request->search,

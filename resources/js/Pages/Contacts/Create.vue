@@ -157,7 +157,6 @@ const form = useForm({
   address: "",
   notes: "",
   foto: null,
-  is_favorite: false,
 });
 
 const phoneError = ref("");

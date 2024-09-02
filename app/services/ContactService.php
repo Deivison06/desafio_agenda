@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ContactsRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UpdateContactsRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ContactService
 {
@@ -15,7 +16,7 @@ class ContactService
 
     public function list(Request $request)
     {
-        $contacts = $this->contact->query()
+        $contacts = Auth::user()->contacts()
             ->when($request->search, function ($query, $search) {
                 $query->where('first_name', 'like', "%{$search}%")
                     ->orWhere('last_name', 'like', "%{$search}%")
@@ -35,7 +36,8 @@ class ContactService
                 $fotoPath = $request->file('foto')->store('fotos', 'public');
                 $contactData['foto'] = $fotoPath;
             }
-
+            $contactData['user_id'] = Auth::id();
+            dd($request->all());
             return $this->contact->create($contactData);
         });
     }

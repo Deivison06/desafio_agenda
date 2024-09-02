@@ -17,5 +17,11 @@ class Contact extends Model
         'address',
         'notes',
         'foto',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
