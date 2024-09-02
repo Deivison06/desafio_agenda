@@ -37,7 +37,6 @@ class ContactService
                 $contactData['foto'] = $fotoPath;
             }
             $contactData['user_id'] = Auth::id();
-            dd($request->all());
             return $this->contact->create($contactData);
         });
     }
